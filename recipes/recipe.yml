@@ -16,6 +16,13 @@ modules:
     files:
       - source: system
         destination: / # copies files/system/* (* means everything inside it) into your image's root folder /
+  - type: script
+    scripts:
+    - setup-periphery.py
+  - type: systemd
+    system:
+      enabled:
+        - periphery
 
   - type: rpm-ostree
     repos:
