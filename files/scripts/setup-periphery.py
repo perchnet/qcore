@@ -90,7 +90,7 @@ def copy_binary(user_install, bin_dir, version):
 		print("using x86_64 binary")
 	# download the binary to bin path
 	if load_version() == "latest":
-		url = f'https://github.com/moghtech/komodo/releases/latest/download/periphery-x86_64'
+		url = f'https://github.com/moghtech/komodo/releases/latest/download/{periphery_bin}'
 	else:
 		url = f'https://github.com/moghtech/komodo/releases/download/{load_version()}/{periphery_bin}'
 	print(os.popen(f'curl -sSL {url} > {bin_path}').read())
