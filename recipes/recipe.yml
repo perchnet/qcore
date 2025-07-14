@@ -19,6 +19,11 @@ modules:
   - type: script
     snippets:
     - "$CONFIG_DIRECTORY/scripts/setup-periphery.py --force-systemd --distro-install"
+    - |
+        firewall-offline-cmd --new-service=periphery
+        firewall-offline-cmd --service=periphery --set-description="Komodo Periphery"
+        firewall-offline-cmd --service=periphery --add-port=8120/tcp
+
   - type: systemd
     system:
       enabled:
@@ -41,6 +46,8 @@ modules:
     system:
       enabled:
         - qemu-guest-agent
+        - docker.service
+        - docker.socket
 
 
   - type: signing # this sets up the proper policy & signing files for signed images to work fully
