@@ -4,8 +4,6 @@ import sys
 import os
 import shutil
 import platform
-import json
-import urllib.request
 
 def load_version():
 	version = ""
@@ -13,11 +11,8 @@ def load_version():
 		if arg.count("--version") > 0:
 			version = arg.split("=")[1]
 	if len(version) == 0:
-		version = load_latest_version()
+		version = "latest"
 	return version
-
-def load_latest_version():
-	return json.load(urllib.request.urlopen("https://api.github.com/repos/moghtech/komodo/releases/latest"))["tag_name"]
 
 def uses_systemd():
 	force_systemd = sys.argv.count("--force-systemd") > 0
@@ -93,9 +88,12 @@ def copy_binary(user_install, bin_dir, version):
 		periphery_bin = "periphery-aarch64"
 	else:
 		print("using x86_64 binary")
-
 	# download the binary to bin path
-	print(os.popen(f'curl -sSL https://github.com/moghtech/komodo/releases/download/{version}/{periphery_bin} > {bin_path}').read())
+	if load_version() == "latest":
+		url = f'https://github.com/moghtech/komodo/releases/latest/download/periphery-x86_64'
+	else:
+		url = f'https://github.com/moghtech/komodo/releases/download/{load_version()}/{periphery_bin}'
+	print(os.popen(f'curl -sSL {url} > {bin_path}').read())
 
 	# add executable permissions
 	os.popen(f'chmod +x {bin_path}')
